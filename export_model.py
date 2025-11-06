@@ -9,6 +9,9 @@ YOLO12 模型导出脚本
   # 导出 ONNX (INT8)
   python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format onnx --int8
   
+  # 导出 ONNX (INT8) 指定数据集目录
+  python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format onnx --int8 --dataset-dir DF-Data
+  
   # 导出 TensorRT (FP16)
   python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format engine
   
@@ -24,7 +27,7 @@ import argparse
 import os
 
 
-def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_yaml=None):
+def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_yaml=None, dataset_dir='datasets'):
     """
     导出模型
     
@@ -35,6 +38,7 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
         half: 是否使用 FP16（仅 TensorRT）
         imgsz: 图像尺寸
         data_yaml: 数据集配置（INT8 量化需要）
+        dataset_dir: 数据集目录（默认 'datasets'）
     """
     print("=" * 70)
     print("🚀 YOLO12 模型导出")
@@ -55,9 +59,11 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
     
     # INT8 量化需要数据集
     if int8 and not data_yaml:
-        print("\n⚠️  警告: INT8 量化需要数据集用于校准")
-        print("   使用默认数据集: datasets/data.yaml")
-        data_yaml = 'datasets/data.yaml'
+        data_yaml = os.path.join(dataset_dir, 'data.yaml')
+        print(f"\n⚠️  警告: INT8 量化需要数据集用于校准")
+        print(f"   使用默认数据集: {data_yaml}")
+        if not os.path.exists(data_yaml):
+            raise FileNotFoundError(f"数据集配置文件不存在: {data_yaml}")
     
     # 加载模型
     print("\n📥 加载模型...")
@@ -129,6 +135,8 @@ def main():
                         help='图像尺寸')
     parser.add_argument('--data', type=str, default=None,
                         help='数据集配置文件 (INT8 量化需要)')
+    parser.add_argument('--dataset-dir', type=str, default='datasets',
+                        help='数据集目录 (默认: datasets)')
     
     args = parser.parse_args()
     
@@ -142,7 +150,8 @@ def main():
         int8=args.int8,
         half=args.half,
         imgsz=args.imgsz,
-        data_yaml=args.data
+        data_yaml=args.data,
+        dataset_dir=args.dataset_dir
     )
 
 
