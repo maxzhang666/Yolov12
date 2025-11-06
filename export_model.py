@@ -3,7 +3,7 @@ YOLO12 模型导出脚本
 支持导出 ONNX 和 TensorRT 格式，支持 INT8 量化
 
 使用方式：
-  # 导出 ONNX (FP32)
+  # 导出 ONNX (FP32) 到默认目录 model_exporter
   python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format onnx
   
   # 导出 ONNX (INT8)
@@ -11,6 +11,9 @@ YOLO12 模型导出脚本
   
   # 导出 ONNX (INT8) 指定数据集目录
   python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format onnx --int8 --dataset-dir DF-Data
+  
+  # 导出到自定义目录
+  python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format onnx --output-dir exported_models
   
   # 导出 TensorRT (FP16)
   python export_model.py --model runs/detect/yolo12n_person_head/weights/best.pt --format engine
@@ -27,7 +30,7 @@ import argparse
 import os
 
 
-def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_yaml=None, dataset_dir='datasets'):
+def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_yaml=None, dataset_dir='datasets', output_dir='model_exporter'):
     """
     导出模型
     
@@ -39,6 +42,7 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
         imgsz: 图像尺寸
         data_yaml: 数据集配置（INT8 量化需要）
         dataset_dir: 数据集目录（默认 'datasets'）
+        output_dir: 输出目录（默认 'model_exporter'）
     """
     print("=" * 70)
     print("🚀 YOLO12 模型导出")
@@ -46,6 +50,7 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
     print(f"📁 模型: {model_path}")
     print(f"📦 格式: {', '.join(formats)}")
     print(f"📐 图像尺寸: {imgsz}")
+    print(f"📂 输出目录: {output_dir}")
     if int8:
         print(f"⚡ INT8 量化: 启用")
         print(f"📊 校准数据: {data_yaml}")
@@ -56,6 +61,10 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
     # 检查模型文件
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"模型文件不存在: {model_path}")
+    
+    # 创建输出目录
+    os.makedirs(output_dir, exist_ok=True)
+    print(f"📁 输出目录已创建: {output_dir}")
     
     # INT8 量化需要数据集
     if int8 and not data_yaml:
@@ -98,6 +107,13 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
             # 执行导出
             export_path = model.export(**export_args)
             
+            # 移动到输出目录
+            if export_path and os.path.exists(export_path):
+                filename = os.path.basename(export_path)
+                new_path = os.path.join(output_dir, filename)
+                os.rename(export_path, new_path)
+                export_path = new_path
+            
             print(f"✅ {fmt.upper()} 导出成功: {export_path}")
             
             # 显示文件大小
@@ -137,6 +153,8 @@ def main():
                         help='数据集配置文件 (INT8 量化需要)')
     parser.add_argument('--dataset-dir', type=str, default='datasets',
                         help='数据集目录 (默认: datasets)')
+    parser.add_argument('--output-dir', type=str, default='model_exporter',
+                        help='输出目录 (默认: model_exporter)')
     
     args = parser.parse_args()
     
@@ -151,7 +169,8 @@ def main():
         half=args.half,
         imgsz=args.imgsz,
         data_yaml=args.data,
-        dataset_dir=args.dataset_dir
+        dataset_dir=args.dataset_dir,
+        output_dir=args.output_dir
     )
 
 
