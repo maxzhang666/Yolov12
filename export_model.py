@@ -56,8 +56,8 @@ def export_model(model_path, formats, int8=False, half=False, imgsz=640, data_ya
     # INT8 量化需要数据集
     if int8 and not data_yaml:
         print("\n⚠️  警告: INT8 量化需要数据集用于校准")
-        print("   使用默认数据集: DF-Data/data.yaml")
-        data_yaml = 'DF-Data/data.yaml'
+        print("   使用默认数据集: datasets/data.yaml")
+        data_yaml = 'datasets/data.yaml'
     
     # 加载模型
     print("\n📥 加载模型...")
