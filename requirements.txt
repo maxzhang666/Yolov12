@@ -1,0 +1,30 @@
+# YOLO12 训练所需的Python依赖包
+
+# 核心依赖
+ultralytics>=8.0.0        # YOLO模型库（包含YOLOv12）
+torch>=2.0.0              # PyTorch深度学习框架
+torchvision>=0.15.0       # PyTorch视觉库
+
+# 图像处理
+opencv-python>=4.8.0      # OpenCV图像处理
+Pillow>=10.0.0            # PIL图像库
+
+# 数据处理
+numpy>=1.24.0             # 数值计算
+pandas>=2.0.0             # 数据分析
+pyyaml>=6.0               # YAML配置文件解析
+
+# 可视化
+matplotlib>=3.7.0         # 绘图库
+seaborn>=0.12.0           # 统计可视化
+
+# 进度条
+tqdm>=4.65.0              # 进度条显示
+
+# 其他工具
+scipy>=1.10.0             # 科学计算
+psutil>=5.9.0             # 系统资源监控
+
+# 可选：导出模型到其他格式
+# onnx>=1.14.0            # ONNX格式导出
+# coremltools>=7.0        # CoreML格式导出（iOS部署）

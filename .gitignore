@@ -1,0 +1,8 @@
+.venv
+*.pt
+datasets
+runs
+.idea
+
+
+**/**/.DS_Store
