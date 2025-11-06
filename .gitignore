@@ -1,9 +1,6 @@
 .venv
 *.pt
-datasets/*
-runs/*
 .idea
-model_exporter/*
 
 
 **/**/.DS_Store
