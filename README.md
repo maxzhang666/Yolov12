@@ -11,6 +11,17 @@ YoYoFileManage/
 │   ├── train/            # 训练集
 │   ├── valid/            # 验证集
 │   └── test/             # 测试集
+├── docs/                 # 项目文档目录
+│   ├── CLOUD_FILES.md    # 云服务器文件说明
+│   ├── CLOUD_QUICK_START.md # 云服务器快速开始
+│   ├── CLOUD_SUMMARY.md  # 云服务器总结
+│   ├── CLOUD_TRAINING_GUIDE.md # 云服务器训练指南
+│   ├── CONFIG_FIX_SUMMARY.md # 配置修复总结
+│   ├── CONFIG_USAGE.md   # 配置使用说明
+│   ├── GUIDE.md          # 使用指南
+│   ├── PROJECT_STRUCTURE.md # 项目结构说明
+│   ├── SUMMARY.md        # 项目总结
+│   └── UNIFIED_TRAIN_GUIDE.md # 统一训练指南
 ├── train_yolo.py         # 主训练脚本
 ├── train_config.py       # 训练配置文件
 ├── test_yolo.py          # 模型测试脚本
@@ -52,7 +63,7 @@ python quick_start.py
 python train_yolo_cloud.py
 ```
 
-> 📖 详见 [云服务器训练指南](CLOUD_TRAINING_GUIDE.md)
+> 📖 详见 [云服务器训练指南](docs/CLOUD_TRAINING_GUIDE.md)
 
 ### 3. 测试模型
 
@@ -168,8 +179,8 @@ ssh user@server_ip
 python train_yolo_cloud.py
 ```
 
-> 📖 详细指南: [CLOUD_TRAINING_GUIDE.md](CLOUD_TRAINING_GUIDE.md)  
-> ⚡ 快速参考: [CLOUD_QUICK_START.md](CLOUD_QUICK_START.md)
+> 📖 详细指南: [CLOUD_TRAINING_GUIDE.md](docs/CLOUD_TRAINING_GUIDE.md)  
+> ⚡ 快速参考: [CLOUD_QUICK_START.md](docs/CLOUD_QUICK_START.md)
 
 ## 📈 训练结果
 
