@@ -21,10 +21,13 @@ YoYoFileManage/
 │   ├── GUIDE.md          # 使用指南
 │   ├── PROJECT_STRUCTURE.md # 项目结构说明
 │   ├── SUMMARY.md        # 项目总结
-│   └── UNIFIED_TRAIN_GUIDE.md # 统一训练指南
+│   ├── UNIFIED_TRAIN_GUIDE.md # 统一训练指南
+│   └── YOLO_TO_LABELSTUDIO.md # 标注数据转换指南
 ├── train_yolo.py         # 主训练脚本
 ├── train_config.py       # 训练配置文件
 ├── test_yolo.py          # 模型测试脚本
+├── yolo2label_studio.py  # 标注数据转换脚本
+├── convert_to_labelstudio.sh # 批量转换脚本
 ├── requirements.txt      # 依赖包列表
 └── README.md            # 本文件
 ```
@@ -72,6 +75,20 @@ python train_yolo_cloud.py
 ```bash
 python test_yolo.py
 ```
+
+### 4. 标注数据审核（可选）
+
+如果需要对标注数据进行二次审核和微调：
+
+```bash
+# 转换数据集为 Label Studio 格式
+python3 yolo2label_studio.py --dataset test --output test_review.json
+
+# 或使用交互式脚本
+./convert_to_labelstudio.sh
+```
+
+> 📖 详见 [标注数据转换指南](docs/YOLO_TO_LABELSTUDIO.md)
 
 ## ⚙️ 训练配置
 
@@ -133,15 +150,41 @@ patience = 30
 
 ## 📊 数据集信息
 
-- **类别数量**: 2
-- **类别名称**: head, person
+- **类别数量**: 3
+- **类别名称**: body, head, leg
 - **数据格式**: YOLO格式
 - **数据来源**: Roboflow
 
+### 数据集审核与微调
+
+如果需要对标注数据进行二次审核：
+
+**快速转换：**
+```bash
+# 转换测试集进行审核
+python3 yolo2label_studio.py --dataset test --output test_review.json
+
+# 转换训练集
+python3 yolo2label_studio.py --dataset train --output train_review.json
+
+# 转换验证集
+python3 yolo2label_studio.py --dataset valid --output valid_review.json
+```
+
+**使用 Label Studio 进行审核：**
+1. 安装 Label Studio: `pip install label-studio`
+2. 启动服务: `label-studio start`
+3. 导入生成的 JSON 文件
+4. 审核并修正标注
+5. 导出修正后的数据
+
+> 📖 详细步骤参见：[标注数据转换指南](docs/YOLO_TO_LABELSTUDIO.md)
+
 ## 🎯 检测目标
 
-1. **head**: 人物头部
-2. **person**: 完整人物
+1. **body**: 人物身体
+2. **head**: 人物头部
+3. **leg**: 人物腿部
 
 ## 💻 M1 优化说明
 
@@ -273,6 +316,12 @@ workers = 2      # 减少数据加载线程
 - 手动下载后放到相应目录
 
 ## 📝 下一步计划
+
+### 数据质量优化：
+1. 🔍 使用 Label Studio 审核标注数据
+2. 🔧 修正错误标注
+3. 📊 分析混淆矩阵找出问题类别
+4. 📈 针对性增加困难样本
 
 ### 如果效果满意：
 1. ✅ 可以直接在 M1 上部署使用

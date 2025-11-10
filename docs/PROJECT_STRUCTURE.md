@@ -25,14 +25,23 @@ YoYoFileManage/
 │   ├── test_yolo.py               # 模型测试脚本 ⭐
 │   └── monitor.py                 # 训练监控工具
 │
+├── 🏷️ 标注审核相关
+│   ├── yolo2label_studio.py       # YOLO转Label Studio脚本 ⭐
+│   ├── convert_to_labelstudio.sh  # 批量转换脚本（可执行）
+│   └── label_studio_config.xml    # Label Studio配置模板
+│
 ├── 📦 环境配置
 │   ├── requirements.txt           # Python依赖列表 ⭐
 │   └── setup.sh                   # 自动安装脚本（可执行）
 │
 ├── 📖 文档
-│   ├── README.md                  # 项目说明
-│   ├── GUIDE.md                   # 完整使用指南 ⭐ (新手必读)
-│   └── PROJECT_STRUCTURE.md       # 本文件
+│   ├── README.md                  # 项目说明 ⭐
+│   ├── docs/                      # 详细文档目录
+│   │   ├── GUIDE.md              # 完整使用指南 ⭐ (新手必读)
+│   │   ├── PROJECT_STRUCTURE.md  # 本文件
+│   │   ├── YOLO_TO_LABELSTUDIO.md # 标注转换指南 ⭐
+│   │   ├── LABELSTUDIO_QUICKSTART.md # Label Studio快速开始
+│   │   └── ...                   # 其他文档
 │
 ├── 📁 训练输出（运行后自动生成）
 │   └── runs/

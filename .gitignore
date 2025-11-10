@@ -1,6 +1,6 @@
 .venv
 *.pt
 .idea
-
+label_studio_config.xml
 
 **/**/.DS_Store
